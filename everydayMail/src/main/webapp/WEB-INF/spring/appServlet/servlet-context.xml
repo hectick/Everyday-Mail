@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns="http://www.springframework.org/schema/mvc"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:beans="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:task="http://www.springframework.org/schema/task"
+	xsi:schemaLocation="http://www.springframework.org/schema/mvc https://www.springframework.org/schema/mvc/spring-mvc.xsd
+		http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd
+		http://www.springframework.org/schema/task
+    	http://www.springframework.org/schema/task/spring-task.xsd">
+	
+	<!-- <task:annotation-driven/> -->
+    <task:scheduler id="myScheduler" pool-size="10"/>
+    <task:annotation-driven scheduler="myScheduler"/>
+	
+	<!-- DispatcherServlet Context: defines this servlet's request-processing infrastructure -->
+	
+	<!-- Enables the Spring MVC @Controller programming model -->
+	<annotation-driven />
+
+	<!-- Handles HTTP GET requests for /resources/** by efficiently serving up static resources in the ${webappRoot}/resources directory -->
+	<resources mapping="/resources/**" location="/resources/" />
+
+	<!-- Resolves views selected for rendering by @Controllers to .jsp resources in the /WEB-INF/views directory -->
+	<beans:bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<beans:property name="prefix" value="/WEB-INF/views/" />
+		<beans:property name="suffix" value=".jsp" />
+	</beans:bean>
+	
+	<context:component-scan base-package="com.mkcy.everydaymail" />
+	
+	
+	
+	<!-- Spring과 json과의 연동 설정 -->
+	<mvc:annotation-driven>
+	  <mvc:message-converters>
+	  
+	  <!-- 
+	    이 부분은 Controller에서 일반적인 HTML을 리턴하기 위한 설정이다.
+	    JSON을 리턴하지 않을 경우는 Default 값으로 지정 되어 있기 때문에 설정 할 필요 없지만,
+	    JSON 리턴과 HTML 리턴을 모두 하려면은 명시적으로 설정 해 줘야 한다.
+	   -->
+	    <beans:bean class="org.springframework.http.converter.StringHttpMessageConverter">
+	      <beans:property name="supportedMediaTypes">
+	        <beans:list>
+	          <beans:value>text/html; charset=UTF-8</beans:value>
+	        </beans:list>
+	      </beans:property>
+	    </beans:bean>
+	    
+	    <!--
+	      Controller에서 JSON 리턴시 객체를 변환 해주기 위해서 MessageConverter가 필요하다. 
+	    -->
+	    <beans:bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+	      <beans:property name="supportedMediaTypes">
+	        <beans:list>
+	          <beans:value>application/json; charset=UTF-8</beans:value>
+	        </beans:list>
+	      </beans:property>
+	    </beans:bean>
+	    
+	  </mvc:message-converters>
+	</mvc:annotation-driven>
+	
+</beans:beans>
