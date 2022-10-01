@@ -1,5 +1,5 @@
 package com.mkcy.everydaymail.account;
-/*
+
 public class MailAccountResponse {
 	//private String id;
 	private int registerId;
@@ -42,4 +42,3 @@ public class MailAccountResponse {
 	
 
 }
-*/
